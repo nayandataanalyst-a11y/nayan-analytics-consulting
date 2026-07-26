@@ -9,12 +9,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@vitejs/plugin-react": "latest",
-    "vite": "latest",
     "react": "latest",
     "react-dom": "latest",
     "react-icons": "latest",
-    "react-type-animation": "latest"
-  },
-  "devDependencies": {}
+    "react-type-animation": "latest",
+    "vite": "latest"
+  }
 }

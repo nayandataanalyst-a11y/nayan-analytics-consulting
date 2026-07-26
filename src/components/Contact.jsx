@@ -1,3 +1,6 @@
+import { useRef, useState } from "react";
+import emailjs from "@emailjs/browser";
+
 import {
   FaEnvelope,
   FaBriefcase,
@@ -7,31 +10,56 @@ import {
 } from "react-icons/fa";
 
 export default function Contact() {
-  const handleSubmit = (event) => {
+  const formRef = useRef(null);
+
+  const [isSending, setIsSending] = useState(false);
+  const [status, setStatus] = useState({
+    type: "",
+    message: "",
+  });
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const data = new FormData(event.currentTarget);
+    if (!formRef.current) {
+      return;
+    }
 
-    const name = data.get("name");
-    const email = data.get("email");
-    const message = data.get("message");
+    setIsSending(true);
+    setStatus({
+      type: "",
+      message: "",
+    });
 
-    const subject = encodeURIComponent(
-      `Portfolio enquiry from ${name}`
-    );
+    try {
+      await emailjs.sendForm(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        formRef.current,
+        {
+          publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
+        }
+      );
 
-    const body = encodeURIComponent(
-      `Hello Nayan,
+      setStatus({
+        type: "success",
+        message:
+          "Thank you! Your message has been sent successfully. I will get back to you soon.",
+      });
 
-${message}
+      formRef.current.reset();
+    } catch (error) {
+      console.error("EmailJS error:", error);
 
-Regards,
-${name}
-${email}`
-    );
-
-    window.location.href =
-      `mailto:nayan@shreejisoftinfo.com?subject=${subject}&body=${body}`;
+      setStatus({
+        type: "error",
+        message:
+          error?.text ||
+          "Sorry, your message could not be sent. Please contact me through Gmail, LinkedIn or WhatsApp.",
+      });
+    } finally {
+      setIsSending(false);
+    }
   };
 
   return (
@@ -52,6 +80,7 @@ ${email}`
           {/* Gmail */}
           <div className="contact-item">
             <FaEnvelope />
+
             <a href="mailto:nayan.dataanalyst@gmail.com">
               <strong>Gmail</strong>
               <span>nayan.dataanalyst@gmail.com</span>
@@ -61,6 +90,7 @@ ${email}`
           {/* Outlook */}
           <div className="contact-item">
             <FaBriefcase />
+
             <a href="mailto:nayan@shreejisoftinfo.com">
               <strong>Outlook</strong>
               <span>nayan@shreejisoftinfo.com</span>
@@ -70,13 +100,14 @@ ${email}`
           {/* Location */}
           <div className="contact-item">
             <FaMapMarkerAlt />
-             <strong>Location</strong>
+            <strong>Location</strong>
             <span>Vadodara, Gujarat, India</span>
           </div>
 
           {/* LinkedIn */}
           <div className="contact-item">
             <FaLinkedin />
+
             <a
               href="https://www.linkedin.com/in/nayan-dholakia/"
               target="_blank"
@@ -90,6 +121,7 @@ ${email}`
           {/* WhatsApp */}
           <div className="contact-item">
             <FaWhatsapp />
+
             <a
               href="https://wa.me/916352740074?text=Hi%20Nayan,%20I%20visited%20your%20portfolio%20and%20would%20like%20to%20connect."
               target="_blank"
@@ -101,18 +133,24 @@ ${email}`
           </div>
         </div>
 
-        <form className="contact-form" onSubmit={handleSubmit}>
+        <form
+          ref={formRef}
+          className="contact-form"
+          onSubmit={handleSubmit}
+        >
           <input
             type="text"
-            name="name"
+            name="from_name"
             placeholder="Your Name"
+            autoComplete="name"
             required
           />
 
           <input
             type="email"
-            name="email"
+            name="from_email"
             placeholder="Your Email"
+            autoComplete="email"
             required
           />
 
@@ -123,9 +161,23 @@ ${email}`
             required
           />
 
-          <button className="button primary" type="submit">
-            Send Message
+          <button
+            className="button primary"
+            type="submit"
+            disabled={isSending}
+          >
+            {isSending ? "Sending..." : "Send Message"}
           </button>
+
+          {status.message && (
+            <p
+              className={`form-status ${status.type}`}
+              role="status"
+              aria-live="polite"
+            >
+              {status.message}
+            </p>
+          )}
         </form>
       </div>
     </section>

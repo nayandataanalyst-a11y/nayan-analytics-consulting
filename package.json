@@ -12,6 +12,7 @@
     "@emailjs/browser": "^4.4.1",
     "@vitejs/plugin-react": "latest",
     "react": "latest",
+    "react-calendly": "^4.4.0",
     "react-dom": "latest",
     "react-icons": "latest",
     "react-type-animation": "latest",

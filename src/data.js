@@ -1,9 +1,16 @@
 export const roles = [
-  '📊 Power BI Developer', 1500,
-  '📱 Canvas App Developer', 1500,
-  '🚀 Power Platform Team Lead', 1500,
-  '☁️ Azure Data Engineer', 1500,
-  '🏆 Microsoft MVP Aspirant', 1500,
+  "Business Intelligence Consultant",
+  2500,
+  "Executive Reporting Specialist",
+  2500,
+  "Power BI Consultant",
+  2500,
+  "Microsoft Fabric Consultant",
+  2500,
+  "Dynamics 365 Analytics Consultant",
+  2500,
+  "ERP Analytics Specialist",
+  2500,
 ];
 
 export const skills = [

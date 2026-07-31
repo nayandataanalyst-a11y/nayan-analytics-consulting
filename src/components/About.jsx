@@ -47,17 +47,17 @@ export default function About() {
 
           <div className="consulting-stat-grid">
             <div>
-              <strong>40+</strong>
+              <strong>80+</strong>
               <span>Dashboards</span>
             </div>
 
             <div>
-              <strong>8+</strong>
+              <strong>20+</strong>
               <span>Clients</span>
             </div>
 
             <div>
-              <strong>16</strong>
+              <strong>20</strong>
               <span>AppSource Apps</span>
             </div>
 
